@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+    <head>
+        <title th:text="${noticia == null} ? 'Cadastrar notícia' : 'Editar notícia'"></title>
+        <th:block th:include="fragments/general-fragments.html :: headerfiles"> </th:block>
+    </head>
+    <body>
+        <header th:insert="fragments/general-fragments.html :: header"> </header>
+        
+        <div class="navegacao-auxiliar"  th:replace="${noticia == null} ?
+             ~{fragments/general-fragments.html :: navegacaoauxiliar('Cadastrar notícia')} :
+             ~{fragments/general-fragments.html :: navegacaoauxiliar('Editar notícia')}"> </div>
+        
+        <div class="container">
+            <form class="noticia-form" th:action="@{'/admin/noticias'}" th:method="${noticia == null} ? 'POST' : 'PUT'">
+                <div th:replace="fragments/noticia-fragments.html :: formulario-erro"></div>
+                
+                <input type="hidden" th:if="${noticia != null}" name="id" th:value="${noticia.id}">
+                <div th:replace="fragments/noticia-fragments.html :: formulario-input('Título', 'titulo', ${noticia != null} ? ${noticia.titulo} : '')"></div>
+                <div th:replace="fragments/noticia-fragments.html :: formulario-textarea('Lide', 'lide', ${noticia != null} ? ${noticia.lide} : '')"></div>
+                <div th:replace="fragments/noticia-fragments.html :: formulario-textarea('Corpo', 'corpo', ${noticia != null} ? ${noticia.corpo} : '')"></div>
+            
+                <div id="botoes" th:replace="fragments/noticia-fragments.html :: formulario-botoes(${noticia})"></div>
+            </form>
+        </div>
+        
+        
+        <th:block th:include="fragments/general-fragments.html :: scripts"> </th:block>
+    </body>
+</html>

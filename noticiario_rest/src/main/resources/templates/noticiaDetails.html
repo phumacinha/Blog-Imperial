@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+    <head>
+        <title th:text="${noticia.titulo} + ' – Atlética Imperial'"></title>
+        
+        <!-- Incluir arquivos de CSS e outras tags do header -->
+        <th:block th:include="fragments/general-fragments.html :: headerfiles"> </th:block>
+    </head>
+    <body>
+        <!-- Incluir navbar -->
+        <header th:insert="fragments/general-fragments.html :: header"> </header>
+        
+        <!-- Incluir botão para voltar voltar -->
+        <div class="navegacao-auxiliar" th:replace="fragments/general-fragments.html :: navegacaoauxiliar(voltar=true)"> </div>
+        
+            
+        <main>
+            <div class="container">
+                <div class="noticia">
+                    <div class="data-noticia" th:replace="fragments/noticia-fragments.html :: data-noticia(${noticia.dataCriacao})"></div>
+                    <div class="titulo-noticia" th:text="${noticia.titulo}"></div>
+                    <div class="lide-noticia" th:text="${noticia.lide}"></div>
+                    <hr>
+                    <div class="corpo-noticia" th:utext="${noticia.corpo}"></div>
+                </div>
+            </div>
+            
+        </main>
+        
+        
+        <th:block th:include="fragments/general-fragments.html :: scripts"> </th:block>
+    </body>
+</html>
