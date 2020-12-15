@@ -1,0 +1,107 @@
+/*******************************************************************************
+INÍCIO BOTAO PERSONALIZADO
+*******************************************************************************/
+.botao-personalizado {
+    display: inline-block;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    font-family: var(--font-teko);
+    font-weight: 500;
+    font-size: 20px;
+    background-color: white;
+    color: black;
+    outline: none;
+    border: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 0 5px;
+    margin: 0;
+}
+
+.botao-personalizado:hover {
+    background-color: var(--amarelo);
+    text-decoration: none!important;
+    color: black;
+}
+
+.botao-personalizado + .botao-personalizado {
+    margin-left: 10px;
+}
+
+.botao-personalizado.botao-cancelar {
+    background-color: var(--vermelho-claro);
+}
+
+.botao-personalizado.botao-cancelar:hover {
+    background-color: var(--vermelho);
+}
+/*******************************************************************************
+FIM BOTAO PERSONALIZADO
+*******************************************************************************/
+
+
+
+
+/*******************************************************************************
+INÍCIO NOTICIA
+*******************************************************************************/
+.noticia {
+    color: white!important;
+    position: relative;
+    display: block;
+    padding-top: 10px;
+}
+
+.noticia::before {
+    display: block;
+    min-height: 10px;
+    max-height: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    content:"";
+    background-color: var(--amarelo);
+    position: absolute;
+    z-index: -1;
+
+
+}
+
+.noticia div.data-noticia {
+    margin: 20px 0 15px;
+    font-size: 14px;
+    color: var(--amarelo);
+}
+
+.noticia div.titulo-noticia {
+    --tamanho-texto: clamp(24px, 7vw, 48px);
+    font-size: var(--tamanho-texto);
+    font-weight: bold;
+    line-height: calc(var(--tamanho-texto * 1.1));
+    margin-top: -10px;
+}
+
+.noticia div.lide-noticia {
+    --tamanho-texto: clamp(18px, 4.375vw, 24px);
+    font-size: var(--tamanho-texto);
+    margin-top: 20px;
+}
+
+.noticia hr {
+    border: none;
+    border-bottom: 1px solid #36373B;
+    margin: 40px 0;
+}
+
+.noticia div.corpo-noticia {
+    font-size: 18px;
+    line-height: 36px;
+}
+
+.noticia div.corpo-noticia p {
+    margin-bottom: 24px;
+}
+/*******************************************************************************
+FIM NOTICIA
+*******************************************************************************/
