@@ -35,7 +35,7 @@ public class Noticia {
     private Long id;
     
     @NotEmpty(message = "O título não pode estar vazio.")
-    @Size(min = 10, max = 64, message = "O tiítulo deve ter entre 10 e 64 caracteres.") 
+    @Size(min = 10, message = "O tiítulo deve ter no mínimo 10 caracteres.") 
     @NotNull
     private String titulo;
     
