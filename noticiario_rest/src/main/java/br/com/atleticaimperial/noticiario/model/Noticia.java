@@ -12,9 +12,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -26,6 +26,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name="noticia")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Noticia {
     
     @Id
