@@ -1,2 +1,2 @@
-# Blog-Imperial
-Sistema de blog para Atlética Imperial
+# Imperial Press
+Sistema de notícias para Atlética Imperial.
