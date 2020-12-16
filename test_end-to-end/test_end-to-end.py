@@ -29,6 +29,7 @@ driver = webdriver.Chrome('/snap/bin/chromium.chromedriver')  # Optional argumen
 driver.get("http://localhost:4545")
 time.sleep(1.5)
 
+input('Pressione enter para iniciar o teste...')
 
 print_titulo('Iniciando teste de funcionalidades de administrador')
 print('Abrindo área administrativa', end=' ')
