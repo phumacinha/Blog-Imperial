@@ -1,7 +1,7 @@
 package br.com.atleticaimperial.noticiario.controller;
 
 import br.com.atleticaimperial.noticiario.model.Noticia;
-import br.com.atleticaimperial.noticiario.service.NoticiarioService;
+import br.com.atleticaimperial.noticiario.service.NoticiaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,13 +24,13 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
  * @author Pedro Antônio de Souza
  */
 @WebMvcTest
-public class NoticiarioControllerTest {
+public class NoticiaControllerTest {
     
     @Autowired
-    private NoticiarioController noticiarioController;
+    private NoticiaController noticiaController;
     
     @MockBean
-    private NoticiarioService noticiarioService;
+    private NoticiaService noticiaService;
     
     @Autowired
     ObjectMapper mapper;
@@ -39,7 +39,7 @@ public class NoticiarioControllerTest {
     
     @BeforeEach
     public void setup () {
-        standaloneSetup(noticiarioController);
+        standaloneSetup(noticiaController);
     }
     
     @Test
@@ -48,7 +48,7 @@ public class NoticiarioControllerTest {
         noticia = new Noticia(1L, "Título", "Lide", "Corpo", new Date(), new Date());
         noticias.add(noticia);
         
-        when(noticiarioService.findAll())
+        when(noticiaService.findAll())
                 .thenReturn(noticias);
         
         given()
@@ -66,7 +66,7 @@ public class NoticiarioControllerTest {
         noticia.setLide("Lide");
         noticia.setCorpo("Corpo");
         
-        when(noticiarioService.save(noticia))
+        when(noticiaService.save(noticia))
                 .thenReturn(noticia);
         
         given()
@@ -85,7 +85,7 @@ public class NoticiarioControllerTest {
         noticia.setLide("Lide");
         noticia.setCorpo("Corpo");
         
-        when(noticiarioService.save(noticia))
+        when(noticiaService.save(noticia))
                 .thenReturn(null);
         
         given()
@@ -96,14 +96,14 @@ public class NoticiarioControllerTest {
         .then()
             .statusCode(HttpStatus.BAD_REQUEST.value());
         
-        verify(this.noticiarioService, never()).save(noticia);
+        verify(this.noticiaService, never()).save(noticia);
     }
     
     @Test
     public void deveRetornarSucesso_quandoBuscarUmaNoticia () {
         noticia = new Noticia(1L, "Título", "Lide", "Corpo", new Date(), new Date());
         
-        when(noticiarioService.findById(1L))
+        when(noticiaService.findById(1L))
                 .thenReturn(noticia);
         
         given()
@@ -116,7 +116,7 @@ public class NoticiarioControllerTest {
     
     @Test
     void deveRetornarNotFound_quandoBuscarUmaNoticia () {     
-        when(noticiarioService.findById(1000L))
+        when(noticiaService.findById(1000L))
                 .thenReturn(null);
         
         given()
@@ -131,10 +131,10 @@ public class NoticiarioControllerTest {
     public void deveRetornarSucesso_quandoEditarUmaNoticia () throws Exception {
         noticia = new Noticia(37L, "Título", "Lide", "Corpo", new Date(), new Date());
         
-        when(noticiarioService.findById(37L))
+        when(noticiaService.findById(37L))
                 .thenReturn(noticia);
         
-        when(noticiarioService.save(noticia))
+        when(noticiaService.save(noticia))
                 .thenReturn(noticia);
         
         given()
@@ -151,10 +151,10 @@ public class NoticiarioControllerTest {
     public void deveRetornarNotFound_quandoEditarUmaNoticia () throws Exception {
         noticia = new Noticia(404L, "Título", "Lide", "Corpo", new Date(), new Date());
         
-        when(noticiarioService.findById(404L))
+        when(noticiaService.findById(404L))
                 .thenReturn(null);
         
-        when(noticiarioService.save(noticia))
+        when(noticiaService.save(noticia))
                 .thenReturn(null);
         
         given()
@@ -166,17 +166,17 @@ public class NoticiarioControllerTest {
         .then()
             .statusCode(HttpStatus.NOT_FOUND.value());
         
-        verify(noticiarioService, never()).save(noticia);
+        verify(noticiaService, never()).save(noticia);
     }
     
     @Test
     public void deveRetornarSucesso_quandoDeletarUmaNoticia () throws Exception {
         noticia = new Noticia(200L, "Título", "Lide", "Corpo", new Date(), new Date());
         
-        when(noticiarioService.findById(200L))
+        when(noticiaService.findById(200L))
                 .thenReturn(noticia);
         
-        when(noticiarioService.delete(200L))
+        when(noticiaService.delete(200L))
                 .thenReturn(null);
         
         given()
@@ -189,10 +189,10 @@ public class NoticiarioControllerTest {
     
     @Test
     public void deveRetornarNotFound_quandoDeletarUmaNoticia () throws Exception {
-        when(noticiarioService.findById(420L))
+        when(noticiaService.findById(420L))
             .thenReturn(null);
         
-        when(noticiarioService.delete(420L))
+        when(noticiaService.delete(420L))
             .thenReturn(null);
         
         given()
@@ -202,6 +202,6 @@ public class NoticiarioControllerTest {
         .then()
             .statusCode(HttpStatus.NOT_FOUND.value());
         
-        verify(noticiarioService, never()).delete(420L);
+        verify(noticiaService, never()).delete(420L);
     }
 }
