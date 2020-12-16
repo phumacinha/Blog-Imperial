@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * @author Pedro Antônio de Souza
  */
-public interface NoticiarioRepository extends JpaRepository<Noticia, Long> {
+public interface NoticiaRepository extends JpaRepository<Noticia, Long> {
     public List<Noticia> findAllByOrderByDataCriacaoDesc();
 }

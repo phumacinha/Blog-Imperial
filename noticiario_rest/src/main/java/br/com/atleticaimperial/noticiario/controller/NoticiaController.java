@@ -1,6 +1,6 @@
 package br.com.atleticaimperial.noticiario.controller;
 
-import br.com.atleticaimperial.noticiario.service.NoticiarioService;
+import br.com.atleticaimperial.noticiario.service.NoticiaService;
 import br.com.atleticaimperial.noticiario.model.Noticia;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,14 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/noticias")
-public class NoticiarioController {
+public class NoticiaController {
     
     @Autowired
-    NoticiarioService noticiarioService;
+    NoticiaService noticiaService;
     
     @GetMapping
     public ResponseEntity<List<Noticia>> getNoticias() {
-        return new ResponseEntity<>(noticiarioService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(noticiaService.findAll(), HttpStatus.OK);
     }
     
     @PostMapping
@@ -40,13 +40,13 @@ public class NoticiarioController {
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         }
         
-        noticiarioService.save(noticia);
+        noticiaService.save(noticia);
         return new ResponseEntity<>(noticia, HttpStatus.OK);
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<Noticia> getNoticiaById(@PathVariable("id") long id) {
-        Noticia noticia = noticiarioService.findById(id);
+        Noticia noticia = noticiaService.findById(id);
         
         if (noticia != null) {
             return new ResponseEntity<>(noticia, HttpStatus.OK);
@@ -58,10 +58,10 @@ public class NoticiarioController {
     
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteNoticia(@PathVariable("id") long id) {
-        Noticia noticia = noticiarioService.findById(id);
+        Noticia noticia = noticiaService.findById(id);
         
         if (noticia != null) {
-            noticiarioService.delete(id);
+            noticiaService.delete(id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         else {
@@ -76,14 +76,14 @@ public class NoticiarioController {
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         }
         
-        Noticia _noticia = noticiarioService.findById(id);
+        Noticia _noticia = noticiaService.findById(id);
         
         if (_noticia != null) {
             _noticia.setTitulo(noticia.getTitulo());
             _noticia.setLide(noticia.getLide());
             _noticia.setCorpo(noticia.getCorpo());
             
-            noticiarioService.save(_noticia);
+            noticiaService.save(_noticia);
             return new ResponseEntity<>(_noticia, HttpStatus.OK);
         }
         else {

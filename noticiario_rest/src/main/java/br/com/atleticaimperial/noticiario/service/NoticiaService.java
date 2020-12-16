@@ -1,27 +1,27 @@
 package br.com.atleticaimperial.noticiario.service;
 
 import br.com.atleticaimperial.noticiario.model.Noticia;
-import br.com.atleticaimperial.noticiario.repository.NoticiarioRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import br.com.atleticaimperial.noticiario.repository.NoticiaRepository;
 
 /**
  * @author Pedro Antônio de Souza
  */
 @Service
-public class NoticiarioService {
+public class NoticiaService {
     
     @Autowired
-    NoticiarioRepository noticiarioRepository;
+    NoticiaRepository noticiaRepository;
     
     public List<Noticia> findAll() {
-        return noticiarioRepository.findAllByOrderByDataCriacaoDesc();
+        return noticiaRepository.findAllByOrderByDataCriacaoDesc();
     }
 
     public Noticia findById(Long id) {
-        Optional<Noticia> op_noticia = noticiarioRepository.findById(id);
+        Optional<Noticia> op_noticia = noticiaRepository.findById(id);
         
         if (op_noticia.isPresent())
             return op_noticia.get();
@@ -30,7 +30,7 @@ public class NoticiarioService {
     }
 
     public Noticia save(Noticia noticia) {
-        return noticiarioRepository.save(noticia);
+        return noticiaRepository.save(noticia);
     }
     
     public Boolean delete(Long id) {
@@ -38,7 +38,7 @@ public class NoticiarioService {
             return false;
         }
         else {
-            noticiarioRepository.deleteById(id);
+            noticiaRepository.deleteById(id);
             return true;
         }
     }
