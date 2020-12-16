@@ -3,12 +3,12 @@
     <b-navbar toggleable="lg" fixed="top">
       <b-container fluid="lg">
         <b-navbar-brand>
-          <router-link :to="(admin ? '/admin' : '')+'/noticias'">
+          <router-link :to="(admin ? '/admin' : '')+'/noticias'" id="logo">
             <img src="../assets/images/logo.png" height="70" />
           </router-link>
         </b-navbar-brand>
 
-        <b-navbar-toggle target="menu-principal">
+        <b-navbar-toggle target="menu-principal" id="navbar-toggler">
             MENU
         </b-navbar-toggle>
 
@@ -18,8 +18,8 @@
             <b-nav-item :to="'#'">Sobre</b-nav-item>
             <b-nav-item :to="'#'">Esportes</b-nav-item>
             <b-nav-item :to="'#'">Torneios</b-nav-item>
-            <b-nav-item v-if="!admin" :to="{path: '/admin' + rota}" class="link-button"><i class="material-icons md-light">lock</i> Área administrativa</b-nav-item>
-            <b-nav-item v-if="admin" :to="{path: '/admin/nova-noticia'}" class="link-button"><i class="material-icons md-light">add</i> Nova notícia</b-nav-item>
+            <b-nav-item v-if="!admin" :to="{path: '/admin' + rota}" class="link-button" id="botao-area-administrativa"><i class="material-icons md-light">lock</i> Área administrativa</b-nav-item>
+            <b-nav-item v-if="admin" :to="{path: '/admin/nova-noticia'}" class="link-button" id="botao-nova-noticia"><i class="material-icons md-light">add</i> Nova notícia</b-nav-item>
             <b-nav-item v-if="admin" :to="{path: rota}" class="link-button"><i class="material-icons md-light">keyboard_return</i> Logout</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
@@ -58,7 +58,7 @@ header nav .navbar-brand {
 
 header nav .nav-link {
   color: black!important;
-  margin: 0 10px;
+  margin: 2px 10px;
   padding: 2px 10px!important;
 }
 

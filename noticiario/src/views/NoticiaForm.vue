@@ -1,14 +1,18 @@
 <template>
   <div>
     <form id="formulario" class="noticia-form">
-      
+      <div v-show="erros.length > 0" id="erros">
+        <ul>
+          <li v-for="(erro, index) in erros" :key="index">{{erro}}</li>
+        </ul>
+      </div>
       <InputText label="Título" name="titulo" :value="noticia.titulo" />
       <InputText label="Lide" name="lide" type="textarea" :value="noticia.lide" />
       <InputText label="Corpo" name="corpo" type="textarea" :value="noticia.corpo" />
         
-      <div class="d-flex" id="botoes">
-        <button class="botao-personalizado flex-grow-1" @click="submit($event)"> {{ehEdicao() ? 'Salvar' : 'Cadastrar'}} </button>
-        <button @click="discard" class="botao-personalizado botao-descartar col-4" id="cancelar">
+      <div class="d-flex label" id="botoes">
+        <button class="botao-personalizado flex-grow-1" @click="submit($event)" id="botao-submeter"> {{ehEdicao ? 'Salvar' : 'Cadastrar'}} </button>
+        <button @click="discard" class="botao-personalizado botao-descartar col-4" id="botao-descartar">
           DESCARTAR
         </button>
       </div>
@@ -28,6 +32,7 @@ export default {
   data() {
     return {
       noticia: {},
+      erros: [],
       paginaAnterior: '/admin'
     }
   },
@@ -38,40 +43,49 @@ export default {
     })
   },
 
-  mounted: function() {
-    if ('id' in this.$route.params) {
+  created: function() {
+    if (this.ehEdicao) {
       axios
         .get(this.urlRequisicao+this.$route.params.id)
         .then(resposta => (this.noticia = resposta.data))
         .catch(() => {
           this.$router.push("/noticias")
         })
+    } else {
+      this.noticia = {}
     }
   },
 
   computed: {
     urlRequisicao: function () {
       return "http://localhost:8080/noticias/"
+    },
+
+    ehEdicao: function () {
+      return ('id' in this.$route.params
+              && this.$route.path.includes('editar'));
     }
   },
 
   methods: {
-    ehEdicao() {
-      return 'id' in this.noticia;
-    },
-
     discard($event) {
       $event.preventDefault()
 
       if (confirm('Tem certeza que deseja descartar '
-      + this.ehEdicao() ? 'as alterações' : 'a nova notícia')
+      + this.ehEdicao ? 'as alterações' : 'a nova notícia')
       + '?') {
         this.$router.push(this.paginaAnterior)
       }
     },
 
+    scrollTop() {
+      window.scrollTo(0, 0)
+    },
+
     submit($event) {
       $event.preventDefault()
+
+      this.erros = []
 
       var formulario = document.getElementById('formulario');
       var formData = new FormData(formulario)
@@ -80,62 +94,27 @@ export default {
       const t = this
 
       axios({
-        method: this.ehEdicao() ? 'put' : 'post',
-        url: this.urlRequisicao + (this.ehEdicao() ? this.noticia.id : ''),
+        method: this.ehEdicao ? 'put' : 'post',
+        url: this.urlRequisicao + (this.ehEdicao ? this.noticia.id : ''),
         data: jsonData,
         headers: {'Content-Type': 'application/json' }
         })
-        .then(function (response) {
-            alert((t.ehEdicao() ? 'Alterações salvas' : 'Notícia cadastrada') + ' com sucesso!')
+        .then(response => {
+            alert((t.ehEdicao ? 'Alterações salvas' : 'Notícia cadastrada') + ' com sucesso!')
             t.$router.push("/admin/noticias/"+response.data.id)
-            console.log('deu certo', response);
         })
-        .catch(function (response) {
-          console.log(response)
-            alert('Ocorreu um erro ao ' + (t.ehEdicao() ? 'salvar as alterações.' : 'cadastrar nova notícia')
-            + '.\nPor favor, tente novamente!')
-            console.log('deu errado', response);
+        .catch(error => {
+            if (error.response.status === 400) {
+              t.erros = error.response.data
+              t.scrollTop()
+            }
+            else {
+              alert('Ocorreu um erro ao ' + (t.ehEdicao ? 'salvar as alterações.' : 'cadastrar nova notícia')
+              + '.\nPor favor, tente novamente!')
+            }
       })
 
       
-    },
-
-    cadastrar() {
-      var formData = new FormData(this.elemFormulario)
-      var jsonData = JSON.stringify(Object.fromEntries(formData))
-      axios({
-        method: 'post',
-        url: this.urlRequisicao,
-        data: jsonData,
-        headers: {'Content-Type': 'application/json' }
-        })
-        .then(function (response) {
-            //handle success
-            console.log('deu certo', response);
-        })
-        .catch(function (response) {
-            //handle error
-            console.log('deu errado', response);
-      })
-    },
-
-    salvarAlteracao() {
-      var formData = new FormData(this.elemFormulario)
-
-      axios({
-        method: 'put',
-        url: this.urlRequisicao,
-        data: formData,
-        headers: {'Content-Type': 'application/json' }
-        })
-        .then(function (response) {
-            //handle success
-            console.log('deu certo', response);
-        })
-        .catch(function (response) {
-            //handle error
-            console.log('deu errado', response);
-      })
     }
 
   }
@@ -148,16 +127,16 @@ export default {
     border-top: 10px solid var(--amarelo);
 }
 
-.noticia-form div {
+.noticia-form div.label {
     margin-top: 50px;
 }
 
-.noticia-form div label {
+.noticia-form div.label label {
     font-size: 25px;
     color: white;
 }
 
-.noticia-form div input[type='text'], .noticia-form div textarea {
+.noticia-form div.label input[type='text'], .noticia-form div.label textarea {
     width: 100%;
     border: 1px solid white;
     background-color: transparent;
@@ -165,40 +144,44 @@ export default {
     padding: 0 15px;
 }
 
-.noticia-form div input[type='text']:focus, .noticia-form div textarea:focus {
+.noticia-form div.label input[type='text']:focus, .noticia-form div.label textarea:focus {
     outline: none;
     box-shadow: 0 0 20px rgba(255, 255, 255, .4);
 }
 
-.noticia-form div input[type='text'] {
+.noticia-form div.label input[type='text'] {
     height: 70px;
     font-size: 36px;
     font-weight: bold;
 }
 
-.noticia-form div textarea {
+.noticia-form div.label textarea {
     padding: 10px;
     font-size: 18px;
     resize: none;
 }
 
-.noticia-form div textarea#lide {
+.noticia-form div.label textarea#lide {
     height: 105px;
 }
 
-.noticia-form div textarea#corpo {
+.noticia-form div.label textarea#corpo {
     height: 280px;
 }
 
-.noticia-form .erro {
+.noticia-form div#erros {
     display: flex;
     align-items: center;
-    height: 70px;
-    padding: 0 15px;
+    padding: 20px 15px;
+    margin-top: 50px;
     font-size: 20px;
     font-weight: bold;
     color: var(--vermelho);
     border: 1px solid var(--vermelho);
+}
+
+.noticia-form div#erros ul {
+  margin: 0;
 }
 
 .noticia-form .botao-personalizado.botao-descartar {

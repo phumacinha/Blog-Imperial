@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="label">
     <label :for="name"> {{label}} </label> <br>
     <input v-if="type === 'input'" type="text" :name="name" :id="name" :value="value" autocomplete="off" required>
     <textarea v-if="type === 'textarea'" :name="name" :id="name" :value="value"></textarea>

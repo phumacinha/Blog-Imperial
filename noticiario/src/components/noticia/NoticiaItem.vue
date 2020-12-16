@@ -54,7 +54,6 @@ export default {
           .delete("http://localhost:8080/noticias/"+id)
           .then(function() {
             t.$emit("on-delete", {id: t.noticia.id})
-            alert('Notícia excluída com sucesso!')
           })
           .catch(() => {
             alert('Não foi possível excluir a notícia.\nTente novamente!')

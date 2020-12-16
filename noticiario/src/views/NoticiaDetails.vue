@@ -53,10 +53,8 @@ export default {
           .delete("http://localhost:8080/noticias/"+id)
           .then(function() {
             t.$router.push('/admin/noticias')
-            alert('Notícia excluída com sucesso!')
           })
-          .catch(function(response) {
-            console.log(response)
+          .catch(function() {
             alert('Não foi possível excluir a notícia.\nTente novamente!')
           })
 
