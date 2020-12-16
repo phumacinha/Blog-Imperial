@@ -11,14 +11,27 @@ export const routes = new VueRouter({
   mode: 'history',
   routes: [
     {
-      name: 'Notícias',
       path: '/',
-      alias: '/noticias',
+      redirect: '/noticias'
+    },
+    {
+      path: '/admin',
+      redirect: '/admin/noticias'
+    },
+    {
+      name: 'Notícias',
+      path: '/:admin?/noticias/',
+      alias: '/',
       component: Home
     },
     {
       name: 'Notícia',
       path: '/noticias/:id',
+      component: NoticiaDetails
+    },
+    {
+      name: 'Notícia (Modo administrador)',
+      path: '/admin/noticias/:id',
       component: NoticiaDetails
     },
     {

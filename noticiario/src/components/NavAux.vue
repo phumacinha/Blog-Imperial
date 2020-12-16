@@ -2,7 +2,7 @@
   <b-container fluid="lg" class="navegacao-auxiliar">
     <span class="active" v-if="!voltar">{{titulo}}</span>
     <span v-else>
-      <router-link :to="{path: '/noticias' }">
+      <router-link :to="{path: (admin ? '/admin/' : '/')+'noticias' }">
         <i class="large material-icons md-light">chevron_left</i> Voltar para notícias
       </router-link>
     </span>
@@ -13,8 +13,8 @@
 export default {
   data() {
     return {
-      voltar: false,
-      titulo: 'Notícia'
+      titulo: 'Notícia',
+      voltar: false
     }
   },
 
@@ -31,10 +31,17 @@ export default {
   methods: {
     checkRouteName() {
       this.titulo = this.$route.name
-      if (this.titulo == 'Notícia') this.voltar = true
+      if (this.titulo != 'Notícias' && /^Notícia/.test(this.titulo)) this.voltar = true
       else this.voltar = false
     }
+  },
+
+  computed: {
+    admin() {
+      return this.$root.isAdmin
+    }
   }
+
 }
 </script>
 

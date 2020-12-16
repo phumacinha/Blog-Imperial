@@ -3,7 +3,7 @@
     <b-navbar toggleable="lg" fixed="top">
       <b-container fluid="lg">
         <b-navbar-brand>
-          <router-link :to="'/'">
+          <router-link :to="(admin ? '/admin' : '')+'/noticias'">
             <img src="../assets/images/logo.png" height="70" />
           </router-link>
         </b-navbar-brand>
@@ -14,11 +14,13 @@
 
         <b-collapse is-nav id="menu-principal">
           <b-navbar-nav>
-            <b-nav-item :to="'/noticias'">Notícias</b-nav-item>
-            <b-nav-item href="/">Sobre</b-nav-item>
-            <b-nav-item href="/">Esportes</b-nav-item>
-            <b-nav-item href="/">Torneios</b-nav-item>
-            <b-nav-item :to="{path: '/admin/nova-noticia'}" class="link-button"><i class="material-icons md-light">add</i> Nova publicação</b-nav-item>
+            <b-nav-item :to="(admin ? '/admin' : '')+'/noticias'">Notícias</b-nav-item>
+            <b-nav-item :to="'#'">Sobre</b-nav-item>
+            <b-nav-item :to="'#'">Esportes</b-nav-item>
+            <b-nav-item :to="'#'">Torneios</b-nav-item>
+            <b-nav-item v-if="!admin" :to="{path: '/admin' + rota}" class="link-button"><i class="material-icons md-light">lock</i> Área administrativa</b-nav-item>
+            <b-nav-item v-if="admin" :to="{path: '/admin/nova-noticia'}" class="link-button"><i class="material-icons md-light">add</i> Nova notícia</b-nav-item>
+            <b-nav-item v-if="admin" :to="{path: rota}" class="link-button"><i class="material-icons md-light">keyboard_return</i> Logout</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
       </b-container>
@@ -27,7 +29,19 @@
 </template>
 
 <script>
-export default {}
+export default {
+
+  computed: {
+    admin () {
+      return this.$root.isAdmin
+    },
+
+    rota () {
+      return this.$route.path.split("/admin").pop()
+    }
+  }
+
+}
 </script>
 
 <style scoped>

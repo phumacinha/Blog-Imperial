@@ -30,11 +30,11 @@ INÍCIO BOTAO PERSONALIZADO
 }
 
 .botao-personalizado.botao-cancelar {
-    background-color: var(--vermelho-claro);
+    background-color: var(--vermelho-claro)!important;
 }
 
 .botao-personalizado.botao-cancelar:hover {
-    background-color: var(--vermelho);
+    background-color: var(--vermelho)!important;
 }
 /*******************************************************************************
 FIM BOTAO PERSONALIZADO
@@ -48,24 +48,8 @@ INÍCIO NOTICIA
 *******************************************************************************/
 .noticia {
     color: white!important;
-    position: relative;
     display: block;
-    padding-top: 10px;
-}
-
-.noticia::before {
-    display: block;
-    min-height: 10px;
-    max-height: 0;
-    top: 0;
-    left: 0;
-    right: 0;
-    content:"";
-    background-color: var(--amarelo);
-    position: absolute;
-    z-index: -1;
-
-
+    border-top: var(--borda-amarela);
 }
 
 .noticia div.data-noticia {

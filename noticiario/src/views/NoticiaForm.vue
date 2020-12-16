@@ -8,9 +8,9 @@
         
       <div class="d-flex" id="botoes">
         <button class="botao-personalizado flex-grow-1" @click="submit($event)"> {{ehEdicao() ? 'Salvar' : 'Cadastrar'}} </button>
-        <router-link :to="{path: '/noticias'}" class="botao-personalizado botao-cancelar col-4" id="cancelar">
+        <button @click="discard" class="botao-personalizado botao-descartar col-4" id="cancelar">
           DESCARTAR
-        </router-link>
+        </button>
       </div>
     </form>
   </div>
@@ -27,8 +27,15 @@ export default {
 
   data() {
     return {
-      noticia: {}
+      noticia: {},
+      paginaAnterior: '/admin'
     }
+  },
+  
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.paginaAnterior = from.path == '/' ? '/admin' : from.path
+    })
   },
 
   mounted: function() {
@@ -53,6 +60,16 @@ export default {
       return 'id' in this.noticia;
     },
 
+    discard($event) {
+      $event.preventDefault()
+
+      if (confirm('Tem certeza que deseja descartar '
+      + this.ehEdicao() ? 'as alterações' : 'a nova notícia')
+      + '?') {
+        this.$router.push(this.paginaAnterior)
+      }
+    },
+
     submit($event) {
       $event.preventDefault()
 
@@ -69,12 +86,14 @@ export default {
         headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
-            //handle success
-            t.$router.push("/noticias/"+response.data.id)
+            alert((t.ehEdicao() ? 'Alterações salvas' : 'Notícia cadastrada') + ' com sucesso!')
+            t.$router.push("/admin/noticias/"+response.data.id)
             console.log('deu certo', response);
         })
         .catch(function (response) {
-            //handle error
+          console.log(response)
+            alert('Ocorreu um erro ao ' + (t.ehEdicao() ? 'salvar as alterações.' : 'cadastrar nova notícia')
+            + '.\nPor favor, tente novamente!')
             console.log('deu errado', response);
       })
 
@@ -180,5 +199,14 @@ export default {
     font-weight: bold;
     color: var(--vermelho);
     border: 1px solid var(--vermelho);
+}
+
+.noticia-form .botao-personalizado.botao-descartar {
+    opacity: .5;
+}
+
+.noticia-form .botao-personalizado.botao-descartar:hover {
+    opacity: 1;
+    background-color: white;
 }
 </style>

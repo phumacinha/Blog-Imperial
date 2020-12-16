@@ -11,5 +11,10 @@ Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  computed: {
+    isAdmin() {
+      return /^\/admin\//.test(this.$route.path)
+    }
+  }
 }).$mount('#app')
