@@ -43,7 +43,7 @@ def aceitar_caixa_de_alerta(driver):
     time.sleep(.5)
 
 def print_titulo(titulo):
-    print('\n\033[44;30;1m{}\033[0m'.format(titulo.upper()))
+    print('\n\033[44;37;1m{}\033[0m'.format(titulo.upper()))
     time.sleep(.1)
 
 def print_ok():
