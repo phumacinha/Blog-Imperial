@@ -1,6 +1,5 @@
 package br.com.atleticaimperial.noticiario.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import javax.persistence.Column;
@@ -15,7 +14,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,19 +32,16 @@ public class Noticia {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @NotEmpty(message = "O título não pode estar vazio.")
-    @Size(min = 10, message = "O tiítulo deve ter no mínimo 10 caracteres.") 
-    @NotNull
+    @NotBlank(message = "O título é obrigatório.")
     private String titulo;
     
     
-    @NotEmpty(message = "O corpo não pode estar vazio.")
-    @NotNull
+    @NotBlank(message = "O lide é obrigatório.")
     @Lob
     private String lide;
     
-    @NotEmpty(message = "O corpo não pode estar vazio.")
-    @NotNull
+    
+    @NotBlank(message = "O corpo é obrigatório.")
     @Lob
     private String corpo;
     
