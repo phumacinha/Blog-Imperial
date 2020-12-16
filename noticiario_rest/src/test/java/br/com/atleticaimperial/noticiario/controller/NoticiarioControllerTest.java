@@ -15,7 +15,9 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 /**
@@ -46,7 +48,7 @@ public class NoticiarioControllerTest {
         noticia = new Noticia(1L, "Título", "Lide", "Corpo", new Date(), new Date());
         noticias.add(noticia);
         
-        Mockito.when(noticiarioService.findAll())
+        when(noticiarioService.findAll())
                 .thenReturn(noticias);
         
         given()
@@ -64,7 +66,7 @@ public class NoticiarioControllerTest {
         noticia.setLide("Lide");
         noticia.setCorpo("Corpo");
         
-        Mockito.when(noticiarioService.save(noticia))
+        when(noticiarioService.save(noticia))
                 .thenReturn(noticia);
         
         given()
@@ -83,7 +85,7 @@ public class NoticiarioControllerTest {
         noticia.setLide("Lide");
         noticia.setCorpo("Corpo");
         
-        Mockito.when(noticiarioService.save(noticia))
+        when(noticiarioService.save(noticia))
                 .thenReturn(null);
         
         given()
@@ -93,13 +95,15 @@ public class NoticiarioControllerTest {
             .post("/noticias")
         .then()
             .statusCode(HttpStatus.BAD_REQUEST.value());
+        
+        verify(this.noticiarioService, never()).save(noticia);
     }
     
     @Test
     public void deveRetornarSucesso_quandoBuscarUmaNoticia () {
         noticia = new Noticia(1L, "Título", "Lide", "Corpo", new Date(), new Date());
         
-        Mockito.when(noticiarioService.findById(1L))
+        when(noticiarioService.findById(1L))
                 .thenReturn(noticia);
         
         given()
@@ -112,7 +116,7 @@ public class NoticiarioControllerTest {
     
     @Test
     void deveRetornarNotFound_quandoBuscarUmaNoticia () {     
-        Mockito.when(noticiarioService.findById(1000L))
+        when(noticiarioService.findById(1000L))
                 .thenReturn(null);
         
         given()
@@ -127,10 +131,10 @@ public class NoticiarioControllerTest {
     public void deveRetornarSucesso_quandoEditarUmaNoticia () throws Exception {
         noticia = new Noticia(37L, "Título", "Lide", "Corpo", new Date(), new Date());
         
-        Mockito.when(noticiarioService.findById(37L))
+        when(noticiarioService.findById(37L))
                 .thenReturn(noticia);
         
-        Mockito.when(noticiarioService.save(noticia))
+        when(noticiarioService.save(noticia))
                 .thenReturn(noticia);
         
         given()
@@ -147,10 +151,10 @@ public class NoticiarioControllerTest {
     public void deveRetornarNotFound_quandoEditarUmaNoticia () throws Exception {
         noticia = new Noticia(404L, "Título", "Lide", "Corpo", new Date(), new Date());
         
-        Mockito.when(noticiarioService.findById(404L))
+        when(noticiarioService.findById(404L))
                 .thenReturn(null);
         
-        Mockito.when(noticiarioService.save(noticia))
+        when(noticiarioService.save(noticia))
                 .thenReturn(null);
         
         given()
@@ -161,16 +165,18 @@ public class NoticiarioControllerTest {
             .put("/noticias/{id}", 404L)
         .then()
             .statusCode(HttpStatus.NOT_FOUND.value());
+        
+        verify(noticiarioService, never()).save(noticia);
     }
     
     @Test
     public void deveRetornarSucesso_quandoDeletarUmaNoticia () throws Exception {
         noticia = new Noticia(200L, "Título", "Lide", "Corpo", new Date(), new Date());
         
-        Mockito.when(noticiarioService.findById(200L))
+        when(noticiarioService.findById(200L))
                 .thenReturn(noticia);
         
-        Mockito.when(noticiarioService.delete(200L))
+        when(noticiarioService.delete(200L))
                 .thenReturn(null);
         
         given()
@@ -183,17 +189,19 @@ public class NoticiarioControllerTest {
     
     @Test
     public void deveRetornarNotFound_quandoDeletarUmaNoticia () throws Exception {
-        Mockito.when(noticiarioService.findById(404L))
-                .thenReturn(null);
+        when(noticiarioService.findById(420L))
+            .thenReturn(null);
         
-        Mockito.when(noticiarioService.delete(404L))
-                .thenReturn(null);
+        when(noticiarioService.delete(420L))
+            .thenReturn(null);
         
         given()
             .accept(ContentType.JSON)
         .when()
-            .delete("/noticias/{id}", 404L)
+            .delete("/noticias/{id}", 420L)
         .then()
             .statusCode(HttpStatus.NOT_FOUND.value());
+        
+        verify(noticiarioService, never()).delete(420L);
     }
 }
