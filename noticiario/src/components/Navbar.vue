@@ -3,8 +3,16 @@
     <b-navbar toggleable="lg" fixed="top">
       <b-container fluid="lg">
         <b-navbar-brand>
-          <router-link :to="(admin ? '/admin' : '')+'/noticias'" id="logo">
-            <img src="../assets/images/logo.png" height="70" />
+          <router-link :to="(admin ? '/admin' : '')+'/noticias'" id="logo" class="row">
+            <div class="col imagem">
+              <img src="../assets/images/logo.png" height="70" />
+            </div>
+            <div class="col p-0 texto">
+              <div>
+              <span>Imperial</span><br>
+              <span>Press</span>
+              </div>
+            </div>
           </router-link>
         </b-navbar-brand>
 
@@ -49,7 +57,6 @@ header nav {
   background-color: var(--amarelo)!important;
   font-family: var(--font-teko);
   font-size: 24px;
-  text-transform: uppercase;
 }
 
 header nav .navbar-brand {
@@ -60,11 +67,55 @@ header nav .nav-link {
   color: black!important;
   margin: 2px 10px;
   padding: 2px 10px!important;
+  text-transform: uppercase;
 }
 
 header nav .nav-link:hover, header nav .link-button a {
   color: white!important;
   background-color: black;
+}
+
+header nav #logo {
+  color: black;
+  font-family: var(--font-montserrat);
+  font-weight: 900;
+  font-size: 22px;
+  line-height: 22px;
+}
+
+header nav #logo:hover {
+  text-decoration: none!important;
+}
+
+
+header nav #logo:hover .imagem {
+  transform: scale(1.05);
+}
+
+header nav #logo .texto {
+  display: flex;
+  align-items: center;
+}
+
+header nav #logo .texto span {
+  position: relative;
+  display: inline-block;
+  padding: 4px 6px;
+}
+
+header nav #logo .texto br + span {
+  padding-top: 0;
+}
+
+header nav #logo .texto span::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  content: "";
+  z-index: -1;
 }
 
 header nav .link-button a {
