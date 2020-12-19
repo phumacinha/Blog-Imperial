@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 /**
  * @author Pedro Antônio de Souza
